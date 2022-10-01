@@ -1,38 +1,32 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList } from 'react-native';
-import GoalInput from './components/GoalInput';
-import GoalItem from './components/GoalItem';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 
-export default function App() {
-
-  const [courseGoals, setCourseGoals] = useState([]);
-
-  function addGoalHandler(enteredGoalText) {
-    setCourseGoals((currentCourseGoals) => [
-      ...currentCourseGoals,
-      {text: enteredGoalText, key: Math.random().toString()},
-    ]);
-  }
-
+function GoalItem(props) {
   return (
-    <View style={styles.appContainer}>
-      <GoalInput addGoalHandler={addGoalHandler} />
-      <View style={styles.goalsContainer}>
-      <FlatList data={courseGoals} renderItem={(itemData) => {
-        <GoalItem text={itemData.item.text}/>
-        }}/>
-      </View>
+    <View style={styles.goalItem}>
+      <Pressable
+        android_ripple={{ color: '#210644' }}
+        onPress={props.onDeleteItem.bind(this, props.id)}
+        style={({ pressed }) => pressed && styles.pressedItem}
+      >
+        <Text style={styles.goalText}>{props.text}</Text>
+      </Pressable>
     </View>
   );
 }
 
+export default GoalItem;
+
 const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 16,
+  goalItem: {
+    margin: 8,
+    borderRadius: 6,
+    backgroundColor: '#5e0acc',
   },
-  goalsContainer: {
-    flex: 5,
+  pressedItem: {
+    opacity: 0.5,
+  },
+  goalText: {
+    color: 'white',
+    padding: 8,
   },
 });
